@@ -17,14 +17,12 @@ import org.apache.commons.lang.RandomStringUtils;
 
 public class CoolURLUtils {
 
-	private static String HOME_DIRECTORY = "c:\\work\\hehe\\";
-	private static String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-
+	
 	private CoolURLUtils() {
 	}
 
 	public static String generateString() {
-		return RandomStringUtils.random(new Random().nextInt(25) + 6, ALPHABET);
+		return RandomStringUtils.random(new Random().nextInt(25) + 6, CoolUrlConstants.ALPHABET);
 	}
 
 	public static void main(String[] args) {
@@ -38,16 +36,15 @@ public class CoolURLUtils {
 		
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(
-				HOME_DIRECTORY + fileName + ".txt"))) {
+				CoolUrlConstants.HOME_DIRECTORY + fileName + ".txt"))) {
 			String sCurrentLine = "";
 
 			while ((sCurrentLine = br.readLine()) != null) {
-				if (sCurrentLine.startsWith(value))
-				{
 					int index = sCurrentLine.indexOf(";");
-					resultMap.put(sCurrentLine.substring(0, index), sCurrentLine.substring(index));
-					break;
-				}
+					if (sCurrentLine.substring(0, index).equals(value)){
+						resultMap.put(sCurrentLine.substring(0, index), sCurrentLine.substring(index+1));
+						break;
+					}
 			}
 
 		} catch (IOException e) {
@@ -59,7 +56,7 @@ public class CoolURLUtils {
 	
 	public static void writeToFile(String key, String value, String fileName) {
 		
-		Path path = FileSystems.getDefault().getPath(HOME_DIRECTORY, fileName + ".txt") ;
+		Path path = FileSystems.getDefault().getPath(CoolUrlConstants.HOME_DIRECTORY, fileName + ".txt") ;
 		
 		try (BufferedWriter bw = Files.newBufferedWriter (path, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
 			
